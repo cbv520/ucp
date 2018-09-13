@@ -5,7 +5,7 @@
  * Project       : Turtle Graphics - UCP 2018 Semester 2 Assignment
  * Author        : Christopher Villegas - 18359884
  * File Created  : Wednesday, 12th September 2018 4:36:42 pm
- * Last Modified : Thursday, 13th September 2018 3:52:19 am
+ * Last Modified : Thursday, 13th September 2018 10:41:37 pm
  * Standard      : ANSI C
  * **********************************************************************
  * Description   : 
@@ -21,98 +21,132 @@
 #include "file_io.h"
 #include "error.h"
 #include "effects.h"
-#include "logger.h"
 #include <math.h>
+#include "strings.h"
 
-int main(int argc, char** argv)
+#define PI 3.14159265358979323846
+
+void runCommands(List *commands)
 {
-   int err = SUCCESS;
-   List* list = (List*)malloc(sizeof(List));
-   if(argc != 2)
-   {
-      err = INVALID_ARGC;
-   }
-   if(!err)
-   {
-      err = readCommands(argv[1], list);
-   }
-   switch(err)
-   {
-      case SUCCESS:
-         printf("success\n");
-         break;
-      case FILE_NOT_FOUND:
-         printf("file not found\n");
-         break;
-      case FILE_EMPTY:
-         printf("file empty\n");
-         break;
-      case UNKNOWN_COMMAND:
-         printf("unkown command\n");
-         break;
-      case INVALID_NUMBER_OF_PARAMETERS:
-         printf("invalid number of command parameters\n");
-         break;
-      case INVALID_PARAMETER_TYPE: 
-         printf("invalid command parameter type\n");
-         break;
-      case INVALID_ARGC: 
-         printf("invalid number of command line args\n");
-         break;
-   }
-   if(!err)
-   {
-      runCommands(list);
-   }
+   PlotData *data = (PlotData*)malloc(sizeof(PlotData));
+   Command *cmd;
 
-   return 0;
-}
-
-void runCommands(List* commands)
-{
-   Properties *props = (Properties*)malloc(sizeof(Properties));
-   *props = (Properties){
-      0.0,
-      0.0,
-      0.0,
-      0,
-      7,
-      '+'
-   };
-   Command* cmd;
+   /*initial values*/
+   data->angle = 0.0;
+   data->x = 0.0;
+   data->y =  0.0;
+   
+   #ifdef SIMPLE
+   data->bg =  7;
+   data->fg = 0;
+   #else
+   data->bg =  0;
+   data->fg = 7;
+   #endif
+   
+   data->pattern = '+';
+   
    clearScreen();
+   
    do
    {
       cmd = (Command*)(commands->current->value);
-      cmd->function(cmd->value, props);
+      cmd->function(cmd->value, data);
    }
    while(next(commands));
+   
+   penDown();
+   
+   free(data);
 }
 
-CmdFunction getCommand(char* cmd)
+void move(void *value, PlotData *data)
+{
+   double x2 = data->x + *(double*)value*cos(data->angle * PI / 180.0);
+   double y2 = data->y + *(double*)value*sin(data->angle * PI / 180.0);
+   char msg[50];
+   
+   sprintf(msg, "MOVE (%8.3f,%8.3f)-(%8.3f,%8.3f)", 
+           data->x, data->y, x2, y2);
+   logMsg(msg);
+
+   data->x = x2;
+   data->y = y2;
+}
+
+void draw(void *value, PlotData *data)
+{
+   double x2 = data->x + *(double*)value*cos(data->angle * PI / 180.0);
+   double y2 = data->y + *(double*)value*sin(data->angle * PI / 180.0);
+   char msg[50];
+
+   line(data->x, data->y, x2, y2, plotter, data);
+
+   sprintf(msg, "DRAW (%8.3f,%8.3f)-(%8.3f,%8.3f)", 
+           data->x, data->y, x2, y2);
+   logMsg(msg);
+
+   data->x = x2;
+   data->y = y2;
+}
+
+void rotate(void *value, PlotData *data)
+{
+   data->angle += -*(double*)value;
+}
+
+void fg(void *value, PlotData *data)
+{
+   #ifndef SIMPLE
+   data->fg = *(int*)value;
+   #endif
+}
+void bg(void *value, PlotData *data)
+{
+   #ifndef SIMPLE
+   data->bg = *(int*)value;
+   #endif
+}
+
+void pattern(void *value, PlotData *data)
+{
+   data->pattern = *(char*)value;
+}
+
+void plotter(void *plotData)
+{
+   setFgColour(((PlotData*)plotData)->fg);
+   setBgColour(((PlotData*)plotData)->bg);
+   printf("%c", ((PlotData*)plotData)->pattern);
+}
+
+CmdFunction getCommand(char *cmd)
 {
    CmdFunction func;
-   if(!strcmp(cmd, "rotate"))
+
+   uppercase(cmd);
+
+   if(!strcmp(cmd, "ROTATE"))
    {
       func = rotate;
    }
-   else if(!strcmp(cmd, "move"))
+   else if(!strcmp(cmd, "MOVE"))
    {
       func = move;
    }
-   else if(!strcmp(cmd, "draw"))
+   else if(!strcmp(cmd, "DRAW"))
    {
       func = draw;
    }
-   else if(!strcmp(cmd, "fg"))
+   else if(!strcmp(cmd, "FG"))
    {
       func = fg;
    }
-   else if(!strcmp(cmd, "bg"))
+   else if(!strcmp(cmd, "BG"))
    {
       func = bg;
    }
-   else if(!strcmp(cmd, "pattern"))
+   else if(!strcmp(cmd, "PATTERN"))
    {
       func = pattern;
    }
@@ -123,94 +157,43 @@ CmdFunction getCommand(char* cmd)
    return func;
 }
 
-void* getValue(char* cmd_str, char* val_str)
+void* getValue(char *cmd_str, char *val_str)
 {
-   void* val;
-   int *i;
-   double *d;
-   char *c;
-   if(!strcmp(cmd_str, "rotate"))
+   void *val;
+
+   if(!strcmp(cmd_str, "ROTATE") && isDouble(val_str))
    {
-      d = (double*)malloc(sizeof(double));
-      *d = atof(val_str);
-      val = d;
+      if((val = (double*)malloc(sizeof(double))))
+      {
+         *(double*)val = atof(val_str);
+      }
    }
-   else if(!strcmp(cmd_str, "move") || !strcmp(cmd_str, "draw"))
+   else if((!strcmp(cmd_str, "MOVE") || !strcmp(cmd_str, "DRAW")) && 
+            isDouble(val_str))
    {
-      d = (double*)malloc(sizeof(double));
-      *d = atof(val_str);
-      val = d;
+      if((val = (double*)malloc(sizeof(double))))
+      {
+         *(double*)val = atof(val_str);
+      }
    }
-   else if(!strcmp(cmd_str, "fg") || !strcmp(cmd_str, "bg"))
+   else if((!strcmp(cmd_str, "FG") || !strcmp(cmd_str, "BG")) && 
+            isInt(val_str))
    {
-      i = (int*)malloc(sizeof(int));
-      *i = atoi(val_str);
-      val = i;
+      if((val = (int*)malloc(sizeof(int))))
+      {
+         *(int*)val = atoi(val_str);
+      }
    }
-   else if(!strcmp(cmd_str, "pattern"))
+   else if(!strcmp(cmd_str, "PATTERN") && !isWhitespace(*val_str))
    {
-      c = (char*)malloc(sizeof(char));
-      *c = *val_str;
-      val = c;
+      if((val = (char*)malloc(sizeof(char))))
+      {
+         *(char*)val = *val_str;
+      }
    }
    else
    {
       val = NULL;
    }
    return val;
-}
-
-int rotate(void* value, Properties* props)
-{
-   props->angle += *(double*)value;
-   return 0;
-}
-
-int move(void* value, Properties* props)
-{
-   double x2 = props->x + *(double*)value*cos(props->angle * M_PI / 180.0);
-   double y2 = props->y + *(double*)value*sin(props->angle * M_PI / 180.0);
-
-   //logMove(props->x, x2, props->y, y2);
-
-   props->x = x2;
-   props->y = y2;
-   return 0;
-}
-
-int draw(void* value, Properties* props)
-{
-   double x2 = props->x + *(double*)value*cos(props->angle * M_PI / 180.0);
-   double y2 = props->y + *(double*)value*sin(props->angle * M_PI / 180.0);
-
-   //logDraw(props->x, x2, props->y, y2);
-   line(props->x, props->y, y2, x2, plotter, &props->pattern);
-
-   props->x = x2;
-   props->y = y2;
-   return 0;
-}
-
-int fg(void* value, Properties* props)
-{
-   props->fg = *(int*)value;
-   setFgColour(*(char*)value);
-   return 0;
-}
-int bg(void* value, Properties* props)
-{
-   props->bg = *(int*)value;
-   setBgColour(*(char*)value);
-   return 0;
-}
-int pattern(void* value, Properties* props)
-{
-   props->pattern = *(char*)value;
-   return 0;
-}
-
-void plotter(void *plotData)
-{
-   char x = *(char*)plotData;
-   printf("%c", x);
 }
