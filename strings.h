@@ -5,10 +5,10 @@
  * Project       : Turtle Graphics - UCP 2018 Semester 2 Assignment
  * Author        : Christopher Villegas - 18359884
  * File Created  : Wednesday, 12th September 2018 8:04:52 pm
- * Last Modified : Thursday, 13th September 2018 6:48:43 pm
+ * Last Modified : Thursday, 13th September 2018 11:29:38 pm
  * Standard      : ANSI C
  * **********************************************************************
- * Description   : 
+ * Description   : Methods for handling and manipulating strings.
  * **********************************************************************
  */
 

@@ -5,10 +5,10 @@
  * Project       : Turtle Graphics - UCP 2018 Semester 2 Assignment
  * Author        : Christopher Villegas - 18359884
  * File Created  : Wednesday, 12th September 2018 4:29:57 pm
- * Last Modified : Thursday, 13th September 2018 11:08:52 pm
+ * Last Modified : Friday, 14th September 2018 8:04:29 pm
  * Standard      : ANSI C
  * **********************************************************************
- * Description   : 
+ * Description   : Methods for file and stream I/O.
  * **********************************************************************
  */
 
@@ -19,6 +19,23 @@
 #include "drawer.h"
 #include "error.h"
 
+/**
+ * @brief Reads in a file containing turtle graphics commands and converts
+ * them into Command structs. Commands are stored in a list to be executed
+ * by the drawer.
+ * 
+ * @param filename name of file containing turtle graphics commands
+ * @param list Exported list of commands
+ * @return int Error code descirbing the success of reading the file.
+ * possible codes returned:
+ * SUCCESS - 0
+ * FILE_NOT_FOUND - 1
+ * FILE_EMPTY - 2 
+ * UNKNOWN_COMMAND - 3
+ * INVALID_NUMBER_OF_PARAMETERS - 4
+ * INVALID_COMMAND_ARG - 5
+ * MALLOC_ERROR - 7
+ */
 int readCommands(char *filename, List *list)
 {
    Command *cmd;
@@ -35,11 +52,7 @@ int readCommands(char *filename, List *list)
       {
          char func_str[20];
          char value_str[20];
-         if(sscanf(buffer, "%s %s", func_str, value_str) < 2)
-         {
-            err = INVALID_NUMBER_OF_PARAMETERS;
-         }
-         if(!err && !(cmd = (Command*)malloc(sizeof(Command))))
+         if(!(cmd = (Command*)malloc(sizeof(Command))))
          {
             err = MALLOC_ERROR;
          }
@@ -47,13 +60,17 @@ int readCommands(char *filename, List *list)
          {
             err = insert(list, cmd);
          }
+         if(!err && sscanf(buffer, "%s %s", func_str, value_str) < 2)
+         {
+            err = INVALID_NUMBER_OF_PARAMETERS;
+         }
          if(!err && !(cmd->function = getCommand(func_str)))
          {
             err = UNKNOWN_COMMAND;
          }
          if(!err && !(cmd->value = getValue(func_str, value_str)))
          {
-            err = INVALID_PARAMETER_TYPE;
+            err = INVALID_COMMAND_ARG;
          }
       }
       if(!err && !list->head)
@@ -64,6 +81,12 @@ int readCommands(char *filename, List *list)
    return err;
 }
 
+/**
+ * @brief Appends a message to the log file log.txt. Each program execution
+ * is seperated by ------
+ * 
+ * @param msg message to be logged
+ */
 void logMsg(char *msg)
 {
    static int open = 0;

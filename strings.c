@@ -5,18 +5,22 @@
  * Project       : Turtle Graphics - UCP 2018 Semester 2 Assignment
  * Author        : Christopher Villegas - 18359884
  * File Created  : Wednesday, 12th September 2018 8:04:47 pm
- * Last Modified : Thursday, 13th September 2018 8:07:57 pm
+ * Last Modified : Friday, 14th September 2018 7:49:38 pm
  * Standard      : ANSI C
  * **********************************************************************
- * Description   : 
+ * Description   : Methods for handling and manipulating strings.
  * **********************************************************************
  */
 
 
 #include "string.h"
 #include <stdlib.h>
-#include <stdio.h>
 
+/**
+ * @brief converts a string to upper case.
+ * 
+ * @param str string being converted to upper case.
+ */
 void uppercase(char *str)
 {
    for(; *str; str++)
@@ -28,11 +32,25 @@ void uppercase(char *str)
    }
 }
 
+/**
+ * @brief checks to see if a character is a white space character.
+ * 
+ * @param ch char being checked
+ * @return int 1 if char is white space.
+ */
 int isWhitespace(char ch)
 {
    return ch == ' ' || ch == '\t' || ch == '\n';
 }
 
+/**
+ * @brief checks to see if a string is a valid real number.
+ * invalid values given to atof() return 0.0, so the first character is 
+ * checked to see whether in fact the string represents 0 or is invalid.
+ * 
+ * @param str string being checked
+ * @return int 1 if the string is a valid real number
+ */
 int isDouble(char *str)
 {
    int b = 1;
@@ -43,6 +61,16 @@ int isDouble(char *str)
    return b; 
 }
 
+/**
+ * @brief checks to see if a string is a valid int.
+ * invalid values given to ato() return 0, so the first character is 
+ * checked to see whether in fact the string represents 0 or is invalid.
+ * this method also invalidates real numbers where the fractional part is 
+ * non 0.
+ * 
+ * @param str string being checked
+ * @return int 1 if the string is a valid int
+ */
 int isInt(char *str)
 {
    int b = 1;

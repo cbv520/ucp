@@ -5,22 +5,42 @@
  * Project       : Turtle Graphics - UCP 2018 Semester 2 Assignment
  * Author        : Christopher Villegas - 18359884
  * File Created  : Wednesday, 12th September 2018 4:27:53 pm
- * Last Modified : Thursday, 13th September 2018 10:27:30 pm
+ * Last Modified : Friday, 14th September 2018 7:20:14 pm
  * Standard      : ANSI C
  * **********************************************************************
- * Description   : 
+ * Description   : Generic singly linked list with convenience methods
+ *                 for iteration and cleanup.
  * **********************************************************************
  */
 
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
+/**
+ * @brief individual node of a singly linked list. 
+ * 
+ * value - pointer to the value being stored in this node
+ *         void pointer allows any varuable type to be stored
+ * next - pointer to the next node in the list
+ */
 typedef struct ListNode
 {
    void *value;
    struct ListNode *next;
 } ListNode;
 
+/**
+ * @brief Wrapper struct storing the head, tail, and current node of a list
+ * allowing for easier management of the list
+ * 
+ * head - first node in the list
+ * tail - last node in the list, allows for inserting into the list without
+ *        having to iteration from the beginning each time
+ * current - Used when iterating over the list, pointing to the current node.
+ *           Before each time iterating over the list, this pointer must 
+ *           point to the same node as head to begin iterating from the 
+ *           beginning.
+ */
 typedef struct List
 {
    ListNode *head;
