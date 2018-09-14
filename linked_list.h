@@ -5,25 +5,17 @@
  * Project       : Turtle Graphics - UCP 2018 Semester 2 Assignment
  * Author        : Christopher Villegas - 18359884
  * File Created  : Wednesday, 12th September 2018 4:27:53 pm
-<<<<<<< HEAD
- * Last Modified : Friday, 14th September 2018 7:20:14 pm
+ * Last Modified : Friday, 14th September 2018 8:42:17 pm
  * Standard      : ANSI C
  * **********************************************************************
  * Description   : Generic singly linked list with convenience methods
  *                 for iteration and cleanup.
-=======
- * Last Modified : Wednesday, 12th September 2018 8:14:11 pm
- * Standard      : ANSI C
- * **********************************************************************
- * Description   : 
->>>>>>> 80110704ca04716407bccfdd6e465453db9d5645
  * **********************************************************************
  */
 
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
-<<<<<<< HEAD
 /**
  * @brief individual node of a singly linked list. 
  * 
@@ -59,23 +51,5 @@ typedef struct List
 int insert(List *list, void *value);
 int next(List *list);
 void deleteList(List *list);
-=======
-typedef struct ListNode
-{
-   void* value;
-   struct ListNode* next;
-} ListNode;
-
-typedef struct List
-{
-   ListNode* head;
-   ListNode* tail;
-   ListNode* current;
-} List;
-
-void insert(List* list, void* value);
-int next(List* list);
-void deleteList(List* list);
->>>>>>> 80110704ca04716407bccfdd6e465453db9d5645
 
 #endif

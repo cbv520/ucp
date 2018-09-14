@@ -5,7 +5,7 @@
  * Project       : Turtle Graphics - UCP 2018 Semester 2 Assignment
  * Author        : Christopher Villegas - 18359884
  * File Created  : Wednesday, 12th September 2018 4:36:42 pm
- * Last Modified : Friday, 14th September 2018 8:31:56 pm
+ * Last Modified : Friday, 14th September 2018 8:36:25 pm
  * Standard      : ANSI C
  * **********************************************************************
  * Description   : Methods related to the commands run by turtle graphics
@@ -294,62 +294,4 @@ void* getValue(char *cmd_str, char *val_str)
       val = NULL;
    }
    return val;
-<<<<<<< HEAD
-=======
-}
-
-int rotate(void* value, Properties* props)
-{
-   props->angle += *(double*)value;
-   return 0;
-}
-
-int move(void* value, Properties* props)
-{
-   double x2 = props->x + *(double*)value*cos(props->angle * M_PI / 180.0);
-   double y2 = props->y + *(double*)value*sin(props->angle * M_PI / 180.0);
-
-   //logMove(props->x, x2, props->y, y2);
-
-   props->x = x2;
-   props->y = y2;
-   return 0;
-}
-
-int draw(void* value, Properties* props)
-{
-   double x2 = props->x + *(double*)value*cos(props->angle * M_PI / 180.0);
-   double y2 = props->y + *(double*)value*sin(props->angle * M_PI / 180.0);
-
-   //logDraw(props->x, x2, props->y, y2);
-   line(props->x, props->y, y2, x2, plotter, &props->pattern);
-
-   props->x = x2;
-   props->y = y2;
-   return 0;
-}
-
-int fg(void* value, Properties* props)
-{
-   props->fg = *(int*)value;
-   setFgColour(*(char*)value);
-   return 0;
-}
-int bg(void* value, Properties* props)
-{
-   props->bg = *(int*)value;
-   setBgColour(*(char*)value);
-   return 0;
-}
-int pattern(void* value, Properties* props)
-{
-   props->pattern = *(char*)value;
-   return 0;
-}
-
-void plotter(void *plotData)
-{
-   char x = *(char*)plotData;
-   printf("%c", x);
->>>>>>> 80110704ca04716407bccfdd6e465453db9d5645
 }
