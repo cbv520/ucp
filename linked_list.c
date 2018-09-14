@@ -5,7 +5,7 @@
  * Project       : Turtle Graphics - UCP 2018 Semester 2 Assignment
  * Author        : Christopher Villegas - 18359884
  * File Created  : Wednesday, 12th September 2018 4:27:01 pm
- * Last Modified : Friday, 14th September 2018 8:41:41 pm
+ * Last Modified : Friday, 14th September 2018 8:52:07 pm
  * Standard      : ANSI C
  * **********************************************************************
  * Description   : Generic singly linked list with convenience methods
@@ -21,7 +21,9 @@
 #include "error.h"
 
 /**
- * @brief Append a node to the end of the list
+ * @brief Append a node to the end of the list. If the list is empty, the 
+ * list is initialised, otherwise an new node is linked to the tail node
+ * and the tail pointer is updated.
  * 
  * @param list List to append node to
  * @param value pointer to the value being stored at this node

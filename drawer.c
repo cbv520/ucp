@@ -5,7 +5,7 @@
  * Project       : Turtle Graphics - UCP 2018 Semester 2 Assignment
  * Author        : Christopher Villegas - 18359884
  * File Created  : Wednesday, 12th September 2018 4:36:42 pm
- * Last Modified : Friday, 14th September 2018 8:36:25 pm
+ * Last Modified : Friday, 14th September 2018 9:01:58 pm
  * Standard      : ANSI C
  * **********************************************************************
  * Description   : Methods related to the commands run by turtle graphics
@@ -244,7 +244,7 @@ CmdFunction getCommand(char *cmd)
 /**
  * @brief Get the value associated with a command
  * Valid values for each command:
- * ROTATE - real number between 0 and 360
+ * ROTATE - real number between -360 and 360
  * MOVE - real number
  * DRAW - real number
  * FG - integer between 0 and 7
@@ -263,7 +263,10 @@ void* getValue(char *cmd_str, char *val_str)
    {
       if((val = (double*)malloc(sizeof(double))))
       {
-         *(double*)val = atof(val_str);
+         if(val >= -360 && val <= 360)
+         {
+            *(double*)val = atof(val_str);
+         }
       }
    }
    else if((!strcmp(cmd_str, "MOVE") || !strcmp(cmd_str, "DRAW")) && 
@@ -279,6 +282,7 @@ void* getValue(char *cmd_str, char *val_str)
    {
       if((val = (int*)malloc(sizeof(int))))
       {
+         if(val >= 0 && val <= 7)
          *(int*)val = atoi(val_str);
       }
    }
