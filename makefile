@@ -1,5 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Werror -ansi -pedantic
+<<<<<<< HEAD
 FLAGS_DEBUG = -DDEBUG
 FLAGS_SIMPLE = -DSIMPLE
 OBJ = turtle_graphics.o effects.o file_io.o drawer.o linked_list.o strings.o
@@ -49,3 +50,17 @@ effects.o: effects.c effects.h
 
 clean :
 	rm -f $(EXEC_DEFAULT) $(EXEC_SIMPLE) $(EXEC_DEBUG) $(OBJ)
+=======
+DFLAGS = -DDEBUG
+OBJ = linked_list.o
+EXEC_DEFAULT = TurtleGraphics
+
+$(EXEC_DEFAULT) : $(OBJ)
+	$(CC) $(OBJ) -o $(EXEC_DEFAULT)
+
+linked_list.o : linked_list.c linked_list.h
+	$(CC) $(CFLAGS) -c linked_list.c
+
+clean :
+	rm -f $(EXEC_DEFAULT) $(OBJ)
+>>>>>>> 80110704ca04716407bccfdd6e465453db9d5645

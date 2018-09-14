@@ -5,10 +5,17 @@
  * Project       : Turtle Graphics - UCP 2018 Semester 2 Assignment
  * Author        : Christopher Villegas - 18359884
  * File Created  : Wednesday, 12th September 2018 4:29:57 pm
+<<<<<<< HEAD
  * Last Modified : Friday, 14th September 2018 8:04:29 pm
  * Standard      : ANSI C
  * **********************************************************************
  * Description   : Methods for file and stream I/O.
+=======
+ * Last Modified : Thursday, 13th September 2018 12:50:29 am
+ * Standard      : ANSI C
+ * **********************************************************************
+ * Description   : 
+>>>>>>> 80110704ca04716407bccfdd6e465453db9d5645
  * **********************************************************************
  */
 
@@ -19,6 +26,7 @@
 #include "drawer.h"
 #include "error.h"
 
+<<<<<<< HEAD
 /**
  * @brief Reads in a file containing turtle graphics commands and converts
  * them into Command structs. Commands are stored in a list to be executed
@@ -42,6 +50,14 @@ int readCommands(char *filename, List *list)
    char buffer[50];
    int err = SUCCESS;
    FILE *file = fopen(filename, "r");
+=======
+int readCommands(char* filename, List* list)
+{
+   Command* cmd;
+   char buffer[50];
+   int err = SUCCESS;
+   FILE* file = fopen(filename, "r");
+>>>>>>> 80110704ca04716407bccfdd6e465453db9d5645
    if(!file)
    {
       err = FILE_NOT_FOUND;
@@ -52,6 +68,7 @@ int readCommands(char *filename, List *list)
       {
          char func_str[20];
          char value_str[20];
+<<<<<<< HEAD
          if(!(cmd = (Command*)malloc(sizeof(Command))))
          {
             err = MALLOC_ERROR;
@@ -74,11 +91,33 @@ int readCommands(char *filename, List *list)
          }
       }
       if(!err && !list->head)
+=======
+         if(sscanf(buffer, "%s %s", func_str, value_str) < 2)
+         {
+            err = INVALID_NUMBER_OF_PARAMETERS;
+         }
+         else
+         {
+            cmd = (Command*)malloc(sizeof(Command));
+            if(!(cmd->function = getCommand(func_str)))
+            {
+               err = UNKNOWN_COMMAND;
+            }
+            if(!err && !(cmd->value = getValue(func_str, value_str)))
+            {
+               err = INVALID_PARAMETER_TYPE;
+            }
+            insert(list, cmd);
+         }
+      }
+      if(!list->head)
+>>>>>>> 80110704ca04716407bccfdd6e465453db9d5645
       {
          err = FILE_EMPTY;
       }
    }
    return err;
+<<<<<<< HEAD
 }
 
 /**
@@ -117,3 +156,6 @@ void logMsg(char *msg)
 
 
 
+=======
+}
+>>>>>>> 80110704ca04716407bccfdd6e465453db9d5645

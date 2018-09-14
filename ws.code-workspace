@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+   "settings": {
+      "psi-header.variables": [
+         ["project", "Turtle Graphics - UCP 2018 Semester 2 Assignment"]
+      ]
+   }
+}

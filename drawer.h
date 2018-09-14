@@ -5,10 +5,17 @@
  * Project       : Turtle Graphics - UCP 2018 Semester 2 Assignment
  * Author        : Christopher Villegas - 18359884
  * File Created  : Wednesday, 12th September 2018 4:36:47 pm
+<<<<<<< HEAD
  * Last Modified : Friday, 14th September 2018 6:53:43 pm
  * Standard      : ANSI C
  * **********************************************************************
  * Description   : Methods related to the commands run by turtle graphics
+=======
+ * Last Modified : Thursday, 13th September 2018 3:20:43 am
+ * Standard      : ANSI C
+ * **********************************************************************
+ * Description   : 
+>>>>>>> 80110704ca04716407bccfdd6e465453db9d5645
  * **********************************************************************
  */
 
@@ -18,6 +25,7 @@
 
 #include "linked_list.h"
 
+<<<<<<< HEAD
 /**
  * @brief Data used by the plotter when moving and drawing. 
  * Values are set each time a command in the command list is executed. 
@@ -29,6 +37,8 @@
  * fg - foreground color
  * pattern - pixel pattern
  */
+=======
+>>>>>>> 80110704ca04716407bccfdd6e465453db9d5645
 typedef struct
 {
    double x;
@@ -37,6 +47,7 @@ typedef struct
    int bg;
    int fg;
    char pattern;
+<<<<<<< HEAD
 } PlotData;
 
 /**
@@ -76,6 +87,27 @@ void draw(void *value, PlotData *data);
 void fg(void *value, PlotData *data);
 void bg(void *value, PlotData *data);
 void pattern(void *value, PlotData *data);
+=======
+} Properties;
+
+typedef int (*CmdFunction)(void* value, Properties* props);
+
+typedef struct
+{
+   CmdFunction function;
+   void* value;
+} Command;
+
+void runCommands(List* commands);
+CmdFunction getCommand(char* cmd);
+void* getValue(char* cmd, char* val);
+int rotate(void* value, Properties* props);
+int move(void* value, Properties* props);
+int draw(void* value, Properties* props);
+int fg(void* value, Properties* props);
+int bg(void* value, Properties* props);
+int pattern(void* value, Properties* props);
+>>>>>>> 80110704ca04716407bccfdd6e465453db9d5645
 void plotter(void *plotData);
 
 #endif
