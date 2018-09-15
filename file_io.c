@@ -5,7 +5,7 @@
  * Project       : Turtle Graphics - UCP 2018 Semester 2 Assignment
  * Author        : Christopher Villegas - 18359884
  * File Created  : Wednesday, 12th September 2018 4:29:57 pm
- * Last Modified : Friday, 14th September 2018 8:40:50 pm
+ * Last Modified : Friday, 14th September 2018 11:11:42 pm
  * Standard      : ANSI C
  * **********************************************************************
  * Description   : Methods for file and stream I/O.
@@ -68,9 +68,9 @@ int readCommands(char *filename, List *list)
          {
             err = UNKNOWN_COMMAND;
          }
-         if(!err && !(cmd->value = getValue(func_str, value_str)))
-         {
-            err = INVALID_COMMAND_ARG;
+         if(!err)
+         {  
+            err = getValue(func_str, value_str, &cmd->value);
          }
       }
       if(!err && !list->head)
@@ -91,18 +91,21 @@ void logMsg(char *msg)
 {
    static int open = 0;
 	FILE *file = fopen("log.txt", "a");
-   if(!open)
+   if(file)
    {
-      fprintf(file, "------\n");
-    	open = 1;
-	}
-   fprintf(file, "%s\n", msg);
-   
-   #ifdef DEBUG
-   printf("%s\n", msg);
-   #endif
+      if(!open)
+      {
+         fprintf(file, "------\n");
+         open = 1;
+      }
+      fprintf(file, "%s\n", msg);
+      
+      #ifdef DEBUG
+      printf("%s\n", msg);
+      #endif
 
-   fclose(file);
+      fclose(file);
+   }
 }
 
 

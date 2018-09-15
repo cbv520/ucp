@@ -5,7 +5,7 @@
  * Project       : Turtle Graphics - UCP 2018 Semester 2 Assignment
  * Author        : Christopher Villegas - 18359884
  * File Created  : Wednesday, 12th September 2018 4:36:47 pm
- * Last Modified : Friday, 14th September 2018 8:36:40 pm
+ * Last Modified : Friday, 14th September 2018 10:24:32 pm
  * Standard      : ANSI C
  * **********************************************************************
  * Description   : Methods related to the commands run by turtle graphics
@@ -69,7 +69,7 @@ typedef struct
 
 void runCommands(List *commands);
 CmdFunction getCommand(char *cmd);
-void* getValue(char *cmd, char *val);
+int getValue(char *cmd_str, char *val_str, void **val_ptr);
 void rotate(void *value, PlotData *data);
 void move(void *value, PlotData *data);
 void draw(void *value, PlotData *data);

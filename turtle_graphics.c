@@ -5,7 +5,7 @@
  * Project       : Turtle Graphics - UCP 2018 Semester 2 Assignment
  * Author        : Christopher Villegas - 18359884
  * File Created  : Wednesday, 12th September 2018 4:31:07 pm
- * Last Modified : Friday, 14th September 2018 8:40:43 pm
+ * Last Modified : Friday, 14th September 2018 9:39:00 pm
  * Standard      : ANSI C
  * **********************************************************************
  * Description   : Main method for the Turtle Graphics program
@@ -77,7 +77,7 @@ int main(int argc, char **argv)
       {
          free(((Command*)(list->current->value))->value);
       }
-   }while(list->current && next(list));
+   }while(next(list));
    deleteList(list);
 
    return 0;

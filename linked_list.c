@@ -5,7 +5,7 @@
  * Project       : Turtle Graphics - UCP 2018 Semester 2 Assignment
  * Author        : Christopher Villegas - 18359884
  * File Created  : Wednesday, 12th September 2018 4:27:01 pm
- * Last Modified : Friday, 14th September 2018 8:52:07 pm
+ * Last Modified : Friday, 14th September 2018 11:06:13 pm
  * Standard      : ANSI C
  * **********************************************************************
  * Description   : Generic singly linked list with convenience methods
@@ -69,7 +69,10 @@ int insert(List *list, void *value)
  */
 int next(List *list)
 {
-   list->current = list->current->next;
+   if(list->current)
+   {
+      list->current = list->current->next;
+   }
    return list->current != NULL;
 }
 

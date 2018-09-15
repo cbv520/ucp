@@ -5,7 +5,7 @@
  * Project       : Turtle Graphics - UCP 2018 Semester 2 Assignment
  * Author        : Christopher Villegas - 18359884
  * File Created  : Wednesday, 12th September 2018 4:36:42 pm
- * Last Modified : Friday, 14th September 2018 9:01:58 pm
+ * Last Modified : Friday, 14th September 2018 11:05:26 pm
  * Standard      : ANSI C
  * **********************************************************************
  * Description   : Methods related to the commands run by turtle graphics
@@ -253,49 +253,79 @@ CmdFunction getCommand(char *cmd)
  * 
  * @param cmd_str name of the command
  * @param val_str value represented as a string
- * @return void* pointer to the value. Returns NULL if value isnt valid.
+ * @param val_ptr pointer to the void pointer storing the command's value.
+ * void** used since this is where the value's void pointer is initialised.
+ * @return int Error code stating the success parsing the argument
+ * possible codes:
+ * SUCCESS - 0
+ * INVALID_COMMAND_ARG - 5 
+ * MALLOC_ERROR - 7
  */
-void* getValue(char *cmd_str, char *val_str)
+int getValue(char *cmd_str, char *val_str, void **val_ptr)
 {
+   int err = SUCCESS;
    void *val;
 
-   if(!strcmp(cmd_str, "ROTATE") && isDouble(val_str))
-   {
-      if((val = (double*)malloc(sizeof(double))))
-      {
-         if(val >= -360 && val <= 360)
-         {
-            *(double*)val = atof(val_str);
-         }
-      }
-   }
-   else if((!strcmp(cmd_str, "MOVE") || !strcmp(cmd_str, "DRAW")) && 
-            isDouble(val_str))
+   if(!strcmp(cmd_str, "ROTATE"))
    {
       if((val = (double*)malloc(sizeof(double))))
       {
          *(double*)val = atof(val_str);
+         if(!isDouble(val_str) || 
+            !(*(double*)val >= -360.0 && *(double*)val <= 360.0))
+         {
+            err = INVALID_COMMAND_ARG;
+         }
       }
    }
-   else if((!strcmp(cmd_str, "FG") || !strcmp(cmd_str, "BG")) && 
-            isInt(val_str))
+
+   else if((!strcmp(cmd_str, "MOVE") || !strcmp(cmd_str, "DRAW")))
+   {
+      if((val = (double*)malloc(sizeof(double))))
+      {
+         *(double*)val = atof(val_str);
+         if(!isDouble(val_str))
+         {
+            err = INVALID_COMMAND_ARG;
+         }
+      }
+   }
+
+   else if((!strcmp(cmd_str, "FG") || !strcmp(cmd_str, "BG")))
    {
       if((val = (int*)malloc(sizeof(int))))
       {
-         if(val >= 0 && val <= 7)
          *(int*)val = atoi(val_str);
+         if(!(*(char*)val >= 0 && *(char*)val <= 7) || !isInt(val_str))
+         {
+            err = INVALID_COMMAND_ARG;
+         }
       }
    }
-   else if(!strcmp(cmd_str, "PATTERN") && !isWhitespace(*val_str))
+
+   else if(!strcmp(cmd_str, "PATTERN"))
    {
       if((val = (char*)malloc(sizeof(char))))
       {
          *(char*)val = *val_str;
+         if(isWhitespace(*val_str))
+         {
+            err = INVALID_COMMAND_ARG;
+         }
       }
    }
+
    else
    {
-      val = NULL;
+      err = UNKNOWN_COMMAND;
    }
-   return val;
+
+   if(!err && !val)
+   {
+      err = MALLOC_ERROR;
+   }
+
+   *val_ptr = val;
+
+   return err;
 }

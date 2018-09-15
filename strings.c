@@ -5,7 +5,7 @@
  * Project       : Turtle Graphics - UCP 2018 Semester 2 Assignment
  * Author        : Christopher Villegas - 18359884
  * File Created  : Wednesday, 12th September 2018 8:04:47 pm
- * Last Modified : Friday, 14th September 2018 8:41:28 pm
+ * Last Modified : Friday, 14th September 2018 9:10:44 pm
  * Standard      : ANSI C
  * **********************************************************************
  * Description   : Methods for handling and manipulating strings.
@@ -63,7 +63,7 @@ int isDouble(char *str)
 
 /**
  * @brief checks to see if a string is a valid int.
- * invalid values given to ato() return 0, so the first character is 
+ * invalid values given to atoi() return 0, so the first character is 
  * checked to see whether in fact the string represents 0 or is invalid.
  * this method also invalidates real numbers where the fractional part is 
  * non 0.
