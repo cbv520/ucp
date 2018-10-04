@@ -5,7 +5,7 @@
  * Project       : Turtle Graphics - UCP 2018 Semester 2 Assignment
  * Author        : Christopher Villegas - 18359884
  * File Created  : Wednesday, 12th September 2018 4:36:42 pm
- * Last Modified : Friday, 14th September 2018 11:05:26 pm
+ * Last Modified : Wednesday, 19th September 2018 1:41:17 am
  * Standard      : ANSI C
  * **********************************************************************
  * Description   : Methods related to the commands run by turtle graphics
@@ -116,7 +116,7 @@ void draw(void *value, PlotData *data)
  */
 void rotate(void *value, PlotData *data)
 {
-   data->angle += -*(double*)value;
+   data->angle += *(double*)value;
 }
 
 /**
@@ -295,7 +295,7 @@ int getValue(char *cmd_str, char *val_str, void **val_ptr)
    {
       if((val = (int*)malloc(sizeof(int))))
       {
-         *(int*)val = atoi(val_str);
+         *(int*)val = atoi(val_str) % 8;
          if(!(*(char*)val >= 0 && *(char*)val <= 7) || !isInt(val_str))
          {
             err = INVALID_COMMAND_ARG;

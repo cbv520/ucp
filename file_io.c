@@ -5,7 +5,7 @@
  * Project       : Turtle Graphics - UCP 2018 Semester 2 Assignment
  * Author        : Christopher Villegas - 18359884
  * File Created  : Wednesday, 12th September 2018 4:29:57 pm
- * Last Modified : Friday, 14th September 2018 11:11:42 pm
+ * Last Modified : Wednesday, 19th September 2018 1:46:08 am
  * Standard      : ANSI C
  * **********************************************************************
  * Description   : Methods for file and stream I/O.
@@ -77,6 +77,7 @@ int readCommands(char *filename, List *list)
       {
          err = FILE_EMPTY;
       }
+      fclose(file);
    }
    return err;
 }

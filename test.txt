@@ -9,4 +9,3 @@ ROTATE 90
 dRAW 10
 ROTATE 90
 DRAW 10
-draw  

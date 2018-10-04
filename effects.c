@@ -58,7 +58,7 @@ void line(int x1, int y1, int x2, int y2, PlotFunc plotter, void *plotData)
     for(i = 0; i <= majorDelta; i++)
     {
         /* Move to row y + 1, column x + 1 and plot a point. */
-        printf("\e[%d;%dH", y + 1, x + 1);
+        printf("\033[%d;%dH", y + 1, x + 1);
         (*plotter)(plotData);
         
         /* Move along one "pixel" and (possibly) across one as well. */
@@ -78,7 +78,7 @@ void line(int x1, int y1, int x2, int y2, PlotFunc plotter, void *plotData)
  */
 void clearScreen()
 {
-    printf("\e[2J");
+    printf("\033[2J");
 }
 
 
@@ -88,7 +88,7 @@ void clearScreen()
  */
 void penDown()
 {
-    printf("\e[10000;1H");
+    printf("\033[10000;1H");
 }
 
 
@@ -97,9 +97,9 @@ void penDown()
  */
 void setFgColour(int code)
 {
-    printf("\e[22;%dm", (code % 8) + 30);
+    printf("\033[22;%dm", (code % 8) + 30);
     if((code % 16) >= 8)
-        printf("\e[1m");
+        printf("\033[1m");
 }
 
 
@@ -108,5 +108,5 @@ void setFgColour(int code)
  */
 void setBgColour(int code)
 {
-    printf("\e[%dm", (code % 8) + 40);
+    printf("\033[%dm", (code % 8) + 40);
 }

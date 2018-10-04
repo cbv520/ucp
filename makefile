@@ -45,7 +45,7 @@ linked_list.o: linked_list.c linked_list.h
 	$(CC) $(CFLAGS) -c linked_list.c
 
 effects.o: effects.c effects.h
-	$(CC) -c effects.c
+	$(CC) $(CFLAGS) -c effects.c
 
 clean :
 	rm -f $(EXEC_DEFAULT) $(EXEC_SIMPLE) $(EXEC_DEBUG) $(OBJ)
